@@ -111,13 +111,12 @@ app.get("/resep", (req, res) => {
 
 
 // Create resep with upload image to folder uploads and save image name to db
-app.post("/resep", [upload.single('image'), checkToken], (req, res) => {
+app.post("/resep", checkToken, (req, res) => {
     const q = "INSERT INTO resep SET ?";
 
     const values = {
         title: req.body.title,
         description: req.body.description,
-        image: req.file.filename,
     };
 
     db.query(q, [values], (err, data) => {

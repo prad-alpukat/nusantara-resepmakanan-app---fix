@@ -17,6 +17,7 @@ function Header() {
   function handleLogout() {
     localStorage.removeItem('token');
     setIsLogged(false);
+    window.location.href = '/';
   }
 
   return (
@@ -24,7 +25,12 @@ function Header() {
       <h1>Selamat Datang di Nusantara Beraroma Sedap</h1>
       <nav>
         <Link to="/">Beranda</Link>
-        <Link to="/add">Tambah Resep</Link>
+
+        {
+          isLogged ? (
+            <Link to="/add">Tambah Resep</Link>
+          ) : null
+        }
 
         {
           isLogged ? (

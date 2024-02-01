@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<RecipeList recipes={recipes} />} />
           <Route path="/recipe/:id" element={<RecipeDetail recipes={recipes} />} />
-          <Route path="/add" element={<RecipeForm onAddRecipe={addRecipe} />} />
+          <Route path="/add" element={<RecipeForm />} />
           <Route path="/login" element={<LoginForm />} />
         </Routes>
       </div>

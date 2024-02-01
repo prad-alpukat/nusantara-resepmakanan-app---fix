@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 
 const LoginForm = () => {
-  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,15 +27,15 @@ const LoginForm = () => {
       body: JSON.stringify({ email, password }),
     };
 
-    fetch('http://127.0.0.1:8800/users/login', options)
-      .then(response => response.json())
-      .then(response => {
-        // set the token in the local storage
-        localStorage.setItem('token', response.token);
-        console.log("berhasil login");
-        navigate('/');
-      })
-      .catch(err => console.error({ "error login": err }));
+    try {
+      const response = await axios.post('http://127.0.0.1:8800/users/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      console.log("berhasil login");
+      window.location.href = '/';
+    }
+    catch (err) {
+      console.error({ "error login": err });
+    }
   };
 
   const handleEmailChange = (e) => {

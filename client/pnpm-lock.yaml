@@ -24,7 +24,7 @@ dependencies:
     specifier: ^13.5.0
     version: 13.5.0(@testing-library/dom@9.3.4)
   axios:
-    specifier: ^1.6.1
+    specifier: ^1.6.7
     version: 1.6.7
   react:
     specifier: ^18.2.0

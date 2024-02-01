@@ -1,22 +1,32 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-function RecipeForm({ onAddRecipe }) {
+function RecipeForm() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newRecipe = {
-      id: Math.floor(Math.random() * 1000),
-      name,
-      description,
+    setName('');
+    setDescription('')
+
+    const options = {
+      method: 'POST',
+      url: 'http://localhost:8800/resep',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: localStorage.getItem('token')
+      },
+      data: { title: name, description }
     };
 
-    onAddRecipe(newRecipe);
-
-    setName('');
-    setDescription('');
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+    }).catch(function (error) {
+      console.error(error);
+    });
   };
 
   return (
