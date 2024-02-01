@@ -2,6 +2,7 @@ import express from "express";
 import mysql from "mysql";
 import cors from "cors";
 import multer from "multer";
+import bodyParser from "body-parser";
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -14,9 +15,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
+const jsonParser = bodyParser.json()
+
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json())
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -75,6 +78,7 @@ app.post("/users", (req, res) => {
 
 // Login user, generate token and save in db table users.token return {email, token}
 app.post("/users/login", (req, res) => {
+    console.log(req)
     const q = "SELECT * FROM users WHERE email = ? AND password = ?";
 
     const values = [req.body.email, req.body.password];

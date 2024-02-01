@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (!email.trim()) {
       setEmailError('Masukan Email');
       return;
@@ -18,6 +22,22 @@ const LoginForm = () => {
     }
 
     console.log('Sign in with:', email, password);
+
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    };
+
+    fetch('http://127.0.0.1:8800/users/login', options)
+      .then(response => response.json())
+      .then(response => {
+        // set the token in the local storage
+        localStorage.setItem('token', response.token);
+        console.log("berhasil login");
+        navigate('/');
+      })
+      .catch(err => console.error({ "error login": err }));
   };
 
   const handleEmailChange = (e) => {
@@ -29,6 +49,7 @@ const LoginForm = () => {
     setPassword(e.target.value);
     setPasswordError('');
   };
+
 
   return (
     <div className="login-form">
@@ -54,7 +75,7 @@ const LoginForm = () => {
       <button onClick={handleSignIn} className="sign-in-button">
         Login
         <span role="img" aria-label="finger">
-          
+
         </span>
       </button>
     </div>
